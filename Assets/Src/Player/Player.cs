@@ -55,8 +55,12 @@ public class Player : MonoBehaviour {
 			this.currentState = State.Moving;
 			this.velocity = this.initialVelocity;
 			this.moveCount++;
-		}
-	}
+
+            /////////////////////////////////////////////////////////
+            Toolbox.GetInstance().GetManager().AddMoveCount();
+            /////////////////////////////////////////////////////////
+        }
+    }
 
 	void Moving () {
 		if (velocity > 0f) {
@@ -70,8 +74,10 @@ public class Player : MonoBehaviour {
 
 	void Won () {
 		this.velocity = 0;
+        /////////////////////////////////////////////////////////
         Toolbox.GetInstance().GetManager().AddSceneTime();
         Toolbox.GetInstance().GetManager().NextScene();
+        /////////////////////////////////////////////////////////
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit) {
@@ -80,17 +86,19 @@ public class Player : MonoBehaviour {
 			if (pi) {
 				pi.OnHit(hit, this);
 
-                if(pi.GetComponent<Killing>())
+                /////////////////////////////////////////////////////////
+                if (pi.GetComponent<Killing>())
                 {
                     Toolbox.GetInstance().GetManager().AddSceneTime();
-                    Toolbox.GetInstance().GetManager().AddKilled();
+                    Toolbox.GetInstance().GetManager().AddDiedCount();
                     Toolbox.GetInstance().GetManager().Respawn();
                 }
+                /////////////////////////////////////////////////////////
             }
-		}
+        }
 	}
 
-	public float GetVelocity () {
+    public float GetVelocity () {
 		return this.velocity;
 	}
 
@@ -105,7 +113,9 @@ public class Player : MonoBehaviour {
 	public int AccumulateScore (int scoreAdd) {
 		this.score += scoreAdd;
 
+        /////////////////////////////////////////////////////////
         Toolbox.GetInstance().GetManager().AddScore(this.score);
+        /////////////////////////////////////////////////////////
 
         return this.score;
 	}

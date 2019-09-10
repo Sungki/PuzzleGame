@@ -5,13 +5,9 @@ using UnityEngine.UI;
 
 public class SummaryScreen : SceneObject
 {
-    GameObject myCanvas;
-
     public SummaryScreen()
     {
-        myCanvas = Toolbox.GetInstance().GetDisplayManager().myCanvas;
-        Text mytext = myCanvas.GetComponentInChildren<Text>();
-        mytext.text = Toolbox.GetInstance().GetManager().TotalTime();
+        Toolbox.GetInstance().GetDisplayManager().ShowSummary();
     }
 
     public override void UpdateScene()
@@ -19,6 +15,7 @@ public class SummaryScreen : SceneObject
         if (Input.anyKeyDown)
         {
             Toolbox.GetInstance().GetManager().NextScene();
+            Toolbox.GetInstance().GetDisplayManager().InitText();
         }
     }
 }

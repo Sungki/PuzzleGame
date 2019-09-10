@@ -5,33 +5,40 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    private const int totalLevel = 4;
+    private const int TOTAL_LEVEL = 4;
+
     private SceneState currentState= 0;
     private SceneObject scene = null;
     private float[] levelTime;
-    private int killedCount = 0;
+    private int moveCount = 0;
     private int score = 0;
+    private int lives = 10;
+    private int diedCount = 0;
+
+    private void Start()
+    {
+        levelTime = new float[TOTAL_LEVEL];
+    }
 
     public void Init()
     {
-        levelTime = new float[totalLevel];
+        lives = 10;
+        diedCount = 0;
+        score = 0;
+        moveCount = 0;
         currentState = SceneState.StartScreen;
         scene = SceneFactory.Create(currentState);
     }
 
     public void NextScene()
     {
-        if (currentState == SceneState.SummaryScreen)
-        {
-            Init();
-            SceneManager.LoadScene(currentState.ToString());
-        }
+        if (currentState == SceneState.SummaryScreen) Init();
         else
         {
             currentState++;
-            SceneManager.LoadScene(currentState.ToString());
             scene = SceneFactory.Create(currentState);
         }
+        SceneManager.LoadScene(currentState.ToString());
     }
 
     public void Respawn()
@@ -46,9 +53,27 @@ public class GameManager : MonoBehaviour
         levelTime[(int)currentState-1] = scene.getSceneTime();
     }
 
-    public void AddKilled()
+    public void AddDiedCount()
     {
-        killedCount++;
+        diedCount++;
+        lives--;
+
+        if(lives == 0)
+        {
+            currentState = SceneState.SummaryScreen;
+            scene = SceneFactory.Create(currentState);
+            SceneManager.LoadScene(currentState.ToString());
+        }
+    }
+
+    public string GetPlayerLives() { return "Lives: " + lives; }
+    public string GetDiedCount() { return "Died: " + diedCount; }
+    public string GetMoveCount() { return "MoveCount: " + moveCount.ToString(); }
+    public string GetScore() { return "Score: " + score.ToString(); }
+
+    public void AddMoveCount()
+    {
+        moveCount++;
     }
 
     public void AddScore(int _score)
@@ -58,19 +83,15 @@ public class GameManager : MonoBehaviour
 
     public string TotalTime()
     {
-        float total = 0;
-        string time;
-        time = "Time: ";
+        float totalTime = 0;
+        string str = null;
         for (int i = 0; i < levelTime.Length; i++)
         {
-            total += levelTime[i];
-            time += levelTime[i].ToString() + " , ";
+            totalTime += levelTime[i];
+            str += "Lv" + (i+1).ToString() + ": " + string.Format("{0:N1}", levelTime[i]) + ", ";
         }
-
-        time += "Total: " + total.ToString();
-        time += "Died: " + killedCount.ToString();
-        time += "Score: " + score.ToString();
-        return time;
+        str += "Total: " + string.Format("{0:N1}", totalTime);
+        return str;
     }
 
     void Update()

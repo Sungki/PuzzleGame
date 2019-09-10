@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Level4 : SceneObject
 {
-    float playTime = 0;
+    private float playTime = 0;
 
     public override void UpdateScene()
     {
         playTime += Time.deltaTime;
+
+        Toolbox.GetInstance().GetDisplayManager().ShowHUD(playTime);
     }
 
     public override float getSceneTime()
