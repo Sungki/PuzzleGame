@@ -7,15 +7,15 @@ public class SummaryScreen : SceneObject
 {
     public SummaryScreen()
     {
-        Toolbox.GetInstance().GetDisplayManager().ShowSummary();
+        Toolbox.GetInstance().GetManager<DisplayManager>().ShowSummary();
     }
 
     public override void UpdateScene()
     {
         if (Input.anyKeyDown)
         {
-            Toolbox.GetInstance().GetManager().NextScene();
-            Toolbox.GetInstance().GetDisplayManager().InitText();
+            Toolbox.GetInstance().GetManager<GameManager>().NextScene();
+            Toolbox.GetInstance().GetManager<DisplayManager>().InitText();
         }
     }
 }

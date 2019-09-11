@@ -10,7 +10,7 @@ public class Level1 : SceneObject
     {
         playTime += Time.deltaTime;
 
-        Toolbox.GetInstance().GetDisplayManager().ShowHUD(playTime);
+        Toolbox.GetInstance().GetManager<DisplayManager>().ShowHUD(playTime);
     }
 
     public override float getSceneTime()

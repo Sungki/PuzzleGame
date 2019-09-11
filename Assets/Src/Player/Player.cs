@@ -57,7 +57,7 @@ public class Player : MonoBehaviour {
 			this.moveCount++;
 
             /////////////////////////////////////////////////////////
-            Toolbox.GetInstance().GetManager().AddMoveCount();
+            Toolbox.GetInstance().GetManager<GameManager>().AddMoveCount();
             /////////////////////////////////////////////////////////
         }
     }
@@ -75,8 +75,8 @@ public class Player : MonoBehaviour {
 	void Won () {
 		this.velocity = 0;
         /////////////////////////////////////////////////////////
-        Toolbox.GetInstance().GetManager().AddSceneTime();
-        Toolbox.GetInstance().GetManager().NextScene();
+        Toolbox.GetInstance().GetManager<GameManager>().AddSceneTime();
+        Toolbox.GetInstance().GetManager<GameManager>().NextScene();
         /////////////////////////////////////////////////////////
     }
 
@@ -89,9 +89,9 @@ public class Player : MonoBehaviour {
                 /////////////////////////////////////////////////////////
                 if (pi.GetComponent<Killing>())
                 {
-                    Toolbox.GetInstance().GetManager().AddSceneTime();
-                    Toolbox.GetInstance().GetManager().AddDiedCount();
-                    Toolbox.GetInstance().GetManager().Respawn();
+                    Toolbox.GetInstance().GetManager<GameManager>().AddSceneTime();
+                    Toolbox.GetInstance().GetManager<GameManager>().AddDiedCount();
+                    Toolbox.GetInstance().GetManager<GameManager>().Respawn();
                 }
                 /////////////////////////////////////////////////////////
             }
@@ -114,7 +114,7 @@ public class Player : MonoBehaviour {
 		this.score += scoreAdd;
 
         /////////////////////////////////////////////////////////
-        Toolbox.GetInstance().GetManager().AddScore(this.score);
+        Toolbox.GetInstance().GetManager<GameManager>().AddScore(this.score);
         /////////////////////////////////////////////////////////
 
         return this.score;

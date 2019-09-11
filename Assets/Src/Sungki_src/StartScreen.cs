@@ -8,7 +8,7 @@ public class StartScreen : SceneObject
     {
         if (Input.anyKeyDown)
         {
-            Toolbox.GetInstance().GetManager().NextScene();
+            Toolbox.GetInstance().GetManager<GameManager>().NextScene();
         }
     }
 }

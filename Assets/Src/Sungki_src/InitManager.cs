@@ -6,6 +6,6 @@ public class InitManager : MonoBehaviour
 {
     void Start()
     {
-        Toolbox.GetInstance().GetManager().Init();
+        Toolbox.GetInstance().GetManager<GameManager>().Init();
     }
 }

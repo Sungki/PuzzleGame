@@ -15,17 +15,17 @@ public class GameManager : MonoBehaviour
     private int lives = 10;
     private int diedCount = 0;
 
-    private void Start()
-    {
-        levelTime = new float[TOTAL_LEVEL];
-    }
-
     public void Init()
     {
+        levelTime = new float[TOTAL_LEVEL];
+        for (int i = 0; i < levelTime.Length; i++)
+            levelTime[i] = 0;
+
         lives = 10;
         diedCount = 0;
         score = 0;
         moveCount = 0;
+
         currentState = SceneState.StartScreen;
         scene = SceneFactory.Create(currentState);
     }
@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
 
     public string GetPlayerLives() { return "Lives: " + lives; }
     public string GetDiedCount() { return "Died: " + diedCount; }
-    public string GetMoveCount() { return "MoveCount: " + moveCount.ToString(); }
+    public string GetMoveCount() { return "Moves: " + moveCount.ToString(); }
     public string GetScore() { return "Score: " + score.ToString(); }
 
     public void AddMoveCount()
@@ -88,14 +88,16 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < levelTime.Length; i++)
         {
             totalTime += levelTime[i];
-            str += "Lv" + (i+1).ToString() + ": " + string.Format("{0:N1}", levelTime[i]) + ", ";
+            str += "Level " + (i+1).ToString() + ": " + string.Format("{0:N1}s", levelTime[i]) + "\n";
         }
-        str += "Total: " + string.Format("{0:N1}", totalTime);
+        str += "Total Time: " + string.Format("{0:N1}s", totalTime);
         return str;
     }
 
     void Update()
     {
         scene.UpdateScene();
+
+        if (Input.GetKey("escape")) Application.Quit();
     }
 }

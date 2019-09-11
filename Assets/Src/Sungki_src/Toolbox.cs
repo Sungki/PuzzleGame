@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Reflection;
 
 public class Toolbox : MonoBehaviour
 {
     private static Toolbox _instance;
+
+    Dictionary<string, GameObject> dict = new Dictionary<string, GameObject>();
 
     public static Toolbox GetInstance()
     {
@@ -17,9 +20,6 @@ public class Toolbox : MonoBehaviour
         return Toolbox._instance;
     }
 
-    private GameManager game;
-    private DisplayManager display;
-
     void Awake()
     {
         if (Toolbox._instance != null)
@@ -27,21 +27,21 @@ public class Toolbox : MonoBehaviour
             Destroy(this);
         }
 
-        var go = new GameObject("GameManager");
-        go.transform.parent = this.gameObject.transform;
-        this.game = go.AddComponent<GameManager>();
-        go = new GameObject("DisplayManager");
-        go.transform.parent = this.gameObject.transform;
-        this.display = go.AddComponent<DisplayManager>();
+        CreateManager<GameManager>();
+        CreateManager<DisplayManager>();
     }
 
-    public GameManager GetManager()
+    private void CreateManager<T>() where T : MonoBehaviour
     {
-        return this.game;
+        var go = new GameObject(typeof(T).ToString());
+        go.transform.parent = this.gameObject.transform;
+        go.AddComponent<T>();
+        dict.Add(typeof(T).ToString(), go);
     }
 
-    public DisplayManager GetDisplayManager()
+    public T GetManager<T>() where T : MonoBehaviour
     {
-        return this.display;
+        string key = typeof(T).ToString();
+        return this.dict[key].GetComponent<T>();
     }
 }
